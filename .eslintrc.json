@@ -1,3 +1,40 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": [
+    "next/core-web-vitals",
+    "eslint:recommended",
+    "prettier"
+  ],
+  "plugins": [
+    "@typescript-eslint/eslint-plugin",
+    "jest"
+  ],
+  "rules": {
+    "react/no-unescaped-entities": "off",
+    "@next/next/no-page-custom-font": "off",
+    "no-unused-vars": "off",
+    "no-useless-escape": "off",
+    "no-trailing-spaces": "warn",
+    "no-multi-spaces": "warn",
+    "no-extra-semi": "warn",
+    "@typescript-eslint/ban-ts-ignore": "off",
+
+    // "@typescript-eslint/ban-ts-comment": "warn",
+    "semi": "warn",
+    "quotes": [
+      "error",
+      "double",
+      {
+        "allowTemplateLiterals": true
+      }
+    ],
+    "@typescript-eslint/no-unused-vars": "warn"
+  },
+  "env": {
+    "browser": true,
+    "node": true,
+    "jest": true,
+    "es6": true
+  }
 }
+
+
