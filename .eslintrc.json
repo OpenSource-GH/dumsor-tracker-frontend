@@ -5,7 +5,7 @@
     "prettier"
   ],
   "plugins": [
-    "@typescript-eslint",
+    "@typescript-eslint/eslint-plugin",
     "jest"
   ],
   "rules": {
