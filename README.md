@@ -12,3 +12,7 @@ We're building this project to track the pattern of power outages across the cou
 - When your power it cut off, simply visit the app, and provide the following details:
     - Your location
     - Power Status: Do you have light or not?
+
+## Contributing
+
+Please read our [Contribution Guidelines](https://github.com/OpenSource-GH/dumsor-tracker-frontend/contributing/CONTRIBUTING.md) before contributing to the project.
