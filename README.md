@@ -15,4 +15,4 @@ We're building this project to track the pattern of power outages across the cou
 
 ## Contributing
 
-Please read our [Contribution Guidelines](https://github.com/OpenSource-GH/dumsor-tracker-frontend/contributing/CONTRIBUTING.md) before contributing to the project.
+Please read our [Contribution Guidelines](contributing/CONTRIBUTING.md) before contributing to the project.
