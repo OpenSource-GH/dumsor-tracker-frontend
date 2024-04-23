@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 const FormSchema = z.object({
@@ -49,6 +50,8 @@ function SignInForm() {
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     // Submit the data
+    toast("Data has been submitted");
+    console.log(data);
   }
 
   return (
