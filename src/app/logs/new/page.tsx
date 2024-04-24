@@ -1,10 +1,9 @@
-import React from "react";
+import NewLog from "./components/NewLog";
 
 function CreateLogPage() {
   return (
-    <div>
-      {/* This page will have the UI for creating a log. */}
-      CreateLogPage
+    <div className="max-w-2xl mx-auto">
+      <NewLog />
     </div>
   );
 }
