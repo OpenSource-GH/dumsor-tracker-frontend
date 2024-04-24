@@ -6,7 +6,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
-  title: "💡DUMSOR",
+  title: "Dumsor | Power Outage Tracker",
   description: "An app for monitoring the rate of lights  going out in Ghana ",
 };
 
