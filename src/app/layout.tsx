@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { GeistSans } from "geist/font/sans";
 import "./globals.css";
 import React from "react";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "sonner";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "💡DUMSOR",
@@ -19,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={GeistSans.className}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -28,7 +26,7 @@ export default function RootLayout({
         >
           {children}
         </ThemeProvider>
-        <Toaster/>
+        <Toaster />
       </body>
     </html>
   );

@@ -1,10 +1,9 @@
-import React from "react";
+import CreateLogForm from "./components/create-log";
 
 function CreateLogPage() {
   return (
-    <div>
-      {/* This page will have the UI for creating a log. */}
-      CreateLogPage
+    <div className="max-w-lg mx-auto px-6">
+      <CreateLogForm />
     </div>
   );
 }
