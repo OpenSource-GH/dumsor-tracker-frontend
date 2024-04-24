@@ -5,11 +5,9 @@ import { Checkbox } from "@/components/ui/checkbox";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
-  FormLabel,
-  FormMessage,
+  FormLabel
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { getCurrentDate, getCurrentTime } from "@/utils/date";
@@ -24,9 +22,16 @@ const formSchema = z.object({
   timeOff: z.string().min(1, {
     message: "This is a required field.",
   }),
+  timeBackOn: z.string().min(1, {
+    message: "This is a required field.",
+  }),
 });
 
-function CreateLogForm() {
+type Props = {
+  id: string;
+};
+
+function UpdateLogForm({ id }: Props) {
   const date = getCurrentDate();
   const time = getCurrentTime();
 
@@ -35,17 +40,18 @@ function CreateLogForm() {
     defaultValues: {
       location: "",
       timeOff: "",
+      timeBackOn: "",
     },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    console.log(values, id);
   }
   return (
     <div className="my-8 w-full h-full">
       <BackButton />
       <div className="w-full mb-8">
-        <h3>Record power outage</h3>
+        <h3>Update power outage</h3>
         <div className="flex justify-start items-center gap-2">
           <p className="text-sm text-neutral-500">{date}</p>◦
           <p className="text-sm text-neutral-500">{time}</p>
@@ -64,13 +70,9 @@ function CreateLogForm() {
                     placeholder="Enter your location"
                     {...field}
                     className="placeholder:text-neutral-500"
-                    autoFocus
+                    disabled
                   />
                 </FormControl>
-                <FormDescription>
-                  Make your location as precise as possible.
-                </FormDescription>
-                <FormMessage />
               </FormItem>
             )}
           />
@@ -81,6 +83,25 @@ function CreateLogForm() {
               <FormItem>
                 <FormLabel className="uppercase text-sm">
                   Time of Outage
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    type="time"
+                    className="placeholder:text-neutral-500"
+                    disabled
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="timeBackOn"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="uppercase text-sm">
+                  Time of Restoration
                 </FormLabel>
                 <FormControl>
                   <Input
@@ -102,7 +123,7 @@ function CreateLogForm() {
             size={"lg"}
             className="tracking-wide uppercase w-full my-4"
           >
-            Create Log
+            Update Log
           </Button>
         </form>
       </Form>
@@ -110,4 +131,4 @@ function CreateLogForm() {
   );
 }
 
-export default CreateLogForm;
+export default UpdateLogForm;
