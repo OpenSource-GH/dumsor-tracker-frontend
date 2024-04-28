@@ -4,11 +4,6 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { LightbulbOff } from "lucide-react";
 import { Circle } from "lucide-react";
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/components/ui/hover-card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 type CardProps = {
@@ -34,7 +29,7 @@ export function LogCard({ ...props }: CardProps) {
   }, [props.created_id]);
 
   return (
-    <Link href={`/logs/${props.log_id}`} passHref>
+    <Link href={`/logs/update/${props.log_id}`}>
       <div className="w-80 h-28 group rounded-md cursor-pointer bg-[#E4E7EC]/10 border hover:border-neutral-400 border-neutral-100 p-2 flex flex-col justify-between">
         <div>
           <div className="flex items-center justify-between mb-2">
@@ -60,20 +55,8 @@ export function LogCard({ ...props }: CardProps) {
               {props.location}
             </span>
             <div>
-              <HoverCard>
-                <HoverCardTrigger>
-                  <LightbulbOff className="h-4 w-4 ml-2 hover:text-[#ff5544]" />
-                  <span className="sr-only">Lights out</span>
-                </HoverCardTrigger>
-                <HoverCardContent>
-                  <div className="text-sm text-foreground">
-                    This area hasn't had light in the past hour.{" "}
-                    <span className="underline underline-offset-2">
-                      Learn More.
-                    </span>
-                  </div>
-                </HoverCardContent>
-              </HoverCard>
+              <LightbulbOff className="h-4 w-4 ml-2 hover:text-[#ff5544]" />
+              <span className="sr-only">Lights out</span>
             </div>
           </div>
           <div className="flex items-center gap-2">
