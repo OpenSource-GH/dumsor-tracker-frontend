@@ -3,6 +3,7 @@
 export default function Search({ placeholder }: { placeholder: string }) {
   const handleSearch = (log: string) => {
     // insert logic for search
+    console.log(log);
   };
 
   return (

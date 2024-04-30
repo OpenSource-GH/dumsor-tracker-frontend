@@ -15,7 +15,7 @@ export default async function Home() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  console.log(user)
+  console.log(user);
   return (
     <main>
       <div className="fixed bottom-5 right-5 p-5">

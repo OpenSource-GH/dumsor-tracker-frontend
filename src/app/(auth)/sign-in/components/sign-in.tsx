@@ -23,6 +23,18 @@ import { z } from "zod";
 import { continueWithGoogle } from "../../../actions/auth.actions";
 
 const FormSchema = z.object({
+  email: z
+    .string()
+    .email({
+      message: "Email is invalid.",
+    })
+    .optional(),
+  password: z
+    .string()
+    .min(8, {
+      message: "Password must be at least 8 characters.",
+    })
+    .optional(),
   phone_number: z
     .string()
     .min(8, {

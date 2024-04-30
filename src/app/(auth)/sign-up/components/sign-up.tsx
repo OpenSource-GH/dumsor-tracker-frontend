@@ -23,6 +23,18 @@ import { z } from "zod";
 import { continueWithGoogle } from "../../../actions/auth.actions";
 
 const FormSchema = z.object({
+  email: z
+    .string()
+    .email({
+      message: "Email is invalid.",
+    })
+    .optional(),
+  password: z
+    .string()
+    .min(8, {
+      message: "Password must be at least 8 characters.",
+    })
+    .optional(),
   phone_number: z
     .string()
     .min(8, {
@@ -31,7 +43,6 @@ const FormSchema = z.object({
     .regex(validators.PhoneNumberRegex)
     .optional(),
 });
-
 
 function SignUpForm() {
   const [isLoadingOAuth, setIsLoadingOAuth] = useState(false);
@@ -48,10 +59,10 @@ function SignUpForm() {
     console.log(data);
   }
 
-  function signUpWithGoogle(){
-    setIsLoadingOAuth(true)
-    continueWithGoogle()
-    setIsLoadingOAuth(false)
+  function signUpWithGoogle() {
+    setIsLoadingOAuth(true);
+    continueWithGoogle();
+    setIsLoadingOAuth(false);
   }
 
   return (
