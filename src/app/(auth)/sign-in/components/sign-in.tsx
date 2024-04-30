@@ -1,68 +1,19 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import Loader from "@/components/ui/loader";
-import { validators } from "@/utils";
-import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FcGoogle } from "react-icons/fc";
 import { toast } from "sonner";
-import { z } from "zod";
 import { continueWithGoogle } from "../../../actions/auth.actions";
-
-const FormSchema = z.object({
-  email: z
-    .string()
-    .email({
-      message: "Email is invalid.",
-    })
-    .optional(),
-  password: z
-    .string()
-    .min(8, {
-      message: "Password must be at least 8 characters.",
-    })
-    .optional(),
-  phone_number: z
-    .string()
-    .min(8, {
-      message: "Phone number must be at least 10 characters.",
-    })
-    .regex(validators.PhoneNumberRegex)
-    .optional(),
-});
+import EmailSignIn from "./email-sign-in";
+import PhoneSignIn from "./phone-sign-in";
 
 function SignInForm() {
-  const [isLoadingOAuth, setIsLoadingOAuth] = useState(false);
-
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
-    defaultValues: {
-      phone_number: "",
-    },
-  });
-
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    toast("Data has been submitted");
-    console.log(data);
-  }
-
   function signInWithGoogle() {
-    setIsLoadingOAuth(true);
+    toast.success("Redirecting");
     continueWithGoogle();
-    setIsLoadingOAuth(false);
   }
 
   return (
@@ -79,30 +30,22 @@ function SignInForm() {
             </span>
           </p>
         </div>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="w-full my-6">
-            <FormField
-              control={form.control}
-              name="phone_number"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Phone Number</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormDescription>
-                    We will send an OTP to this number for verification.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <br />
-            <Button type="submit" className="w-full">
-              Submit
-            </Button>
-          </form>
-        </Form>
+        <Tabs defaultValue="email" className="w-full my-6">
+          <TabsList className="w-full">
+            <TabsTrigger value="email" className="w-full">
+              Email
+            </TabsTrigger>
+            <TabsTrigger value="phone" className="w-full">
+              Phone
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent value="email">
+            <EmailSignIn />
+          </TabsContent>
+          <TabsContent value="phone">
+            <PhoneSignIn />
+          </TabsContent>
+        </Tabs>
         <div className="w-full">
           <span className="relative flex justify-center">
             <div className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-transparent bg-gradient-to-r from-transparent via-gray-500 to-transparent opacity-75"></div>
@@ -110,23 +53,17 @@ function SignInForm() {
               <p className="text-sm text-neutral-500">OR</p>
             </span>
           </span>
-          <div className="mt-6">
-            <Button
-              variant={"outline"}
-              type="button"
-              className="w-full items-center gap-3"
-              onClick={signInWithGoogle}
-            >
-              {isLoadingOAuth ? (
-                <Loader width="20" height="20" color="orange" />
-              ) : (
-                <>
-                  <FcGoogle />
-                  Sign in with Google
-                </>
-              )}
-            </Button>
-          </div>
+        </div>
+        <div className="w-full mt-6">
+          <Button
+            variant={"outline"}
+            type="button"
+            className="w-full items-center gap-3"
+            onClick={signInWithGoogle}
+          >
+            <FcGoogle />
+            Sign in with Google
+          </Button>
         </div>
       </div>
     </div>
