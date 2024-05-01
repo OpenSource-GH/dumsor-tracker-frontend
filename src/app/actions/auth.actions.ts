@@ -22,17 +22,27 @@ async function continueWithGoogle() {
   }
 }
 
-async function signOut() {
-  const supabase = await createClient();
-
-  let redirectPath: string | null = null;
+async function signOut(): Promise<{error?: string}> {
+  let success = false;
   try {
-    await supabase.auth.signOut();
-    redirectPath = `/sign-in`;
-  } catch (error) {
-    throw new Error(`${error}`);
-  } finally {
-    if (redirectPath) redirect(redirectPath);
+    const res = await fetch("https://api.dumsor.xyz/api/v1/users/losgout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({email: "", password: ""}),
+    });
+    if (res.status == 200) {
+      success = true;
+    }
+  } catch (err) {
+    throw new Error(`${err}`);
+  }
+
+  if (success) {
+    redirect("/sign-in");
+  } else {
+    return {error: "Failure to sign out"};
   }
 }
 
