@@ -28,6 +28,11 @@ Express: A fast, unopinionated, minimalist web framework for Node.js.
 - When your power gets cut off, simply visit the app, and provide the following details:
   - Your location
   - Power Status: Do you have light or not?
+ 
+### Setting Up:
+- To set up. you'll need to generate a URL and a key from supabase.
+- After acquiring that, store them in an `.env.local` file.
+- Install all dependencies, and you're good to go!
 
 ## Contributing
 
