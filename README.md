@@ -32,6 +32,7 @@ Express: A fast, unopinionated, minimalist web framework for Node.js.
 ### Setting Up:
 - To set up. you'll need to generate a URL and a key from supabase.
 - After acquiring that, store them in an `.env.local` file.
+- add this as well: `NEXT_PUBLIC_API_BASE_URL = http:/localhost:3000/`
 - Install all dependencies, and you're good to go!
 
 ## Contributing
