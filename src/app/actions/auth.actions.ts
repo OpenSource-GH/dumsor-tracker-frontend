@@ -3,6 +3,8 @@
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 
+const BASE_URL = `${process.env.NEXT_PUBLIC_API_BASE_URL}/login`;
+
 async function continueWithGoogle() {
   const supabase = await createClient();
 
@@ -48,5 +50,25 @@ async function getCurrentUser() {
   return user;
 }
 
-export { continueWithGoogle, getCurrentUser, signOut };
+type SignInWithCredentialsPayload = {
+  email: string;
+  password: string;
+}
+
+async function signInWithCredentials(payload: SignInWithCredentialsPayload) {
+  const url = new URL(`${BASE_URL}/login`);
+  const response = await fetch(url, {
+    method: "POST",
+    body: JSON.stringify(payload)
+  });
+
+    if (!response.ok) {
+      const msg = await response.text()
+      throw new Error(msg);
+    }
+
+  return response.json();
+}
+
+export { continueWithGoogle, getCurrentUser, signOut, signInWithCredentials };
 
