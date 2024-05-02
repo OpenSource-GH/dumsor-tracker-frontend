@@ -18,6 +18,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import { signInWithCredentials } from "@/app/actions/auth.actions";
 
 const FormSchema = z.object({
   email: z.string().email({
@@ -40,11 +41,19 @@ function EmailSignIn() {
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
     setIsSubmitting(true);
     toast("Data has been submitted");
-    console.log(data);
-    setIsSubmitting(false);
+    try {
+      console.log(data);
+      const res = await signInWithCredentials(data);
+      console.log(res);
+    } catch (e) {
+      toast.error("Failed to sign-in");
+      console.error((e as Error)?.message);
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
