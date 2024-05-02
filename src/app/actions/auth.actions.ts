@@ -63,7 +63,7 @@ async function signInWithCredentials(payload: SignInWithCredentialsPayload) {
   });
 
     if (!response.ok) {
-      const msg = await response.text()
+      const msg = await response.text();
       throw new Error(msg);
     }
 

@@ -46,7 +46,7 @@ function EmailSignIn() {
     toast("Data has been submitted");
     try {
       console.log(data);
-      const res = await signInWithCredentials(data)
+      const res = await signInWithCredentials(data);
       console.log(res);
     } catch (e) {
       toast.error("Failed to sign-in");
