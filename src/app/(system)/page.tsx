@@ -5,8 +5,6 @@ import { PlusIcon } from "lucide-react";
 import Link from "next/link";
 import LogList from "../../app/(system)/log-feed";
 
-// Define your data here or fetch it from an API
-
 export default async function Home() {
   return (
     <main>
