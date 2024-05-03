@@ -1,6 +1,6 @@
 import CreateLogForm from "./components/create-log";
 
-function CreateLogPage() {
+async function CreateLogPage() {
   return (
     <div className="max-w-lg mx-auto px-6">
       <CreateLogForm />

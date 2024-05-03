@@ -1,4 +1,5 @@
 "use client";
+import { createLog } from "@/app/actions/logs.actions";
 import BackButton from "@/components/ui/back-button";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -12,9 +13,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import Loader from "@/components/ui/loader";
 import { getCurrentDate, getCurrentTime } from "@/utils/date";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 const formSchema = z.object({
@@ -27,6 +32,8 @@ const formSchema = z.object({
 });
 
 function CreateLogForm() {
+  const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const date = getCurrentDate();
   const time = getCurrentTime();
 
@@ -38,8 +45,20 @@ function CreateLogForm() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const payload = { ...values, timeBackOn: "0" };
+    setIsSubmitting(true);
+    try {
+      await createLog(payload);
+      form.reset();
+      toast.success("Log Created!");
+      router.push("/");
+    } catch (e) {
+      toast.error("Failed to create log");
+      console.error((e as Error)?.message);
+    } finally {
+      setIsSubmitting(false);
+    }
   }
   return (
     <div className="my-8 w-full h-full">
@@ -102,7 +121,11 @@ function CreateLogForm() {
             size={"lg"}
             className="tracking-wide uppercase w-full my-4"
           >
-            Create Log
+            {isSubmitting ? (
+              <Loader width="20" height="20" color="orange" />
+            ) : (
+              <>Create Log</>
+            )}
           </Button>
         </form>
       </Form>
