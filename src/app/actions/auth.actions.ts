@@ -24,17 +24,39 @@ async function continueWithGoogle() {
   }
 }
 
-async function signOut() {
-  const supabase = await createClient();
+async function signOut(): Promise<{error?: string}> {
 
-  let redirectPath: string | null = null;
+  // Signout for supabase user
+  const supabase = await createClient();
+  const supabaseUser = await supabase.auth.getUser();
+  if (supabaseUser.data.user) {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      return {error: "Failure to sign out"};
+    }
+  }
+
+  // Signout for all other users
+  let success = false;
   try {
-    await supabase.auth.signOut();
-    redirectPath = `/sign-in`;
-  } catch (error) {
-    throw new Error(`${error}`);
-  } finally {
-    if (redirectPath) redirect(redirectPath);
+    const res = await fetch("https://api.dumsor.xyz/api/v1/users/logout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({email: "", password: ""}),
+    });
+    if (res.status == 200) {
+      success = true;
+    }
+  } catch (err) {
+    throw new Error(`${err}`);
+  }
+
+  if (success) {
+    redirect("/sign-in");
+  } else {
+    return {error: "Failure to sign out"};
   }
 }
 
@@ -47,7 +69,7 @@ async function getCurrentUser() {
     redirect("/sign-in");
   }
 
-  return user;
+  return JSON.parse(JSON.stringify(user));
 }
 
 type SignInWithCredentialsPayload = {
