@@ -43,11 +43,8 @@ function EmailSignIn() {
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     setIsSubmitting(true);
-    toast("Data has been submitted");
     try {
-      console.log(data);
       const res = await signInWithCredentials(data);
-      console.log(res);
     } catch (e) {
       toast.error("Failed to sign-in");
       console.error((e as Error)?.message);

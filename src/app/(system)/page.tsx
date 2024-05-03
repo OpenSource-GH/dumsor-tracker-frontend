@@ -1,21 +1,13 @@
 import { Button } from "@/components/ui/button";
 import Search from "@/components/ui/search-bar";
+import { data } from "@/db";
 import { PlusIcon } from "lucide-react";
 import Link from "next/link";
 import LogList from "../../app/(system)/log-feed";
-import { data } from "@/db";
-import { createClient } from "@/utils/supabase/server";
 
 // Define your data here or fetch it from an API
 
 export default async function Home() {
-  const supabase = await createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  console.log(user);
   return (
     <main>
       <div className="fixed bottom-5 right-5 p-5">
