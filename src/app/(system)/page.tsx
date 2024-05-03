@@ -1,11 +1,33 @@
 import { Button } from "@/components/ui/button";
 import Search from "@/components/ui/search-bar";
-import { data } from "@/db";
 import { PlusIcon } from "lucide-react";
 import Link from "next/link";
 import LogList from "../../app/(system)/log-feed";
+import { createClient } from "@/utils/supabase/server";
+import { getLogs } from "../actions/logs.actions";
 
 export default async function Home() {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  let logs = [];
+  let loading;
+
+  console.log(user);
+
+  try {
+    loading = true;
+    const response = await getLogs();
+    logs = response.data.logs;
+    console.log(logs);
+    loading = false;
+  } catch (error) {
+    console.error("Error fetching logs:", error);
+  }
+
   return (
     <main>
       <div className="fixed bottom-5 right-5 p-5">
@@ -25,11 +47,15 @@ export default async function Home() {
         <div className="py-6">
           <Search placeholder="Search Posts" />
         </div>
-        <div className="w-full h-full border-l-2 border-dashed">
-          <div className="ml-6">
-            <LogList data={data} />
+        {loading ? (
+          <h3 className="text-center">Loading...</h3>
+        ) : (
+          <div className="w-full h-full border-l-2 border-dashed">
+            <div className="ml-6">
+              <LogList data={logs} />
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </main>
   );
