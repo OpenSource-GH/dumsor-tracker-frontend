@@ -25,6 +25,7 @@
     "@radix-ui/react-tabs": "^1.0.4",
     "@supabase/ssr": "^0.3.0",
     "@supabase/supabase-js": "^2.42.7",
+    "axios": "^1.6.8",
     "boring-avatars": "^1.10.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",

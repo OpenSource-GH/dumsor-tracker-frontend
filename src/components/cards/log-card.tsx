@@ -1,35 +1,20 @@
-"use client";
-
-import { useState, useEffect } from "react";
 import Link from "next/link";
 import { LightbulbOff } from "lucide-react";
 import { Circle } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-type CardProps = {
-  log_id: string;
-  author_id: string;
-  author_name: string;
+interface Log {
+  _id: string;
+  id: string;
   location: string;
-  time_off: string;
-  created_id: Date;
-};
+  timeOff: string;
+  timeBackOn: string;
+  __v: number;
+}
 
-export function LogCard({ ...props }: CardProps) {
-  const [timeDiff, setTimeDiff] = useState("");
-
-  useEffect(() => {
-    const postedTime = new Date(props.created_id);
-    const currentTime = new Date();
-    const diffInMs = currentTime.getTime() - postedTime.getTime();
-    const diffInMin = Math.floor(diffInMs / (1000 * 60));
-    setTimeDiff(`${diffInMin} min ago`);
-
-    // we can properly implement logic for hours, days, weeks, etc.
-  }, [props.created_id]);
-
+export function LogCard({ log }: { log: Log }) {
   return (
-    <Link href={`/logs/update/${props.log_id}`}>
+    <Link href={`/logs/update/${log._id}`}>
       <div className="w-80 h-28 group rounded-md cursor-pointer bg-[#E4E7EC]/10 border hover:border-neutral-400 border-neutral-100 p-2 flex flex-col justify-between">
         <div>
           <div className="flex items-center justify-between mb-2">
@@ -40,11 +25,11 @@ export function LogCard({ ...props }: CardProps) {
                 <AvatarFallback className="text-xs">KK</AvatarFallback>
               </Avatar>
               <span className="font-bold tracking-tighter text-xs uppercase text-neutral-500 group-hover:text-neutral-600">
-                {props.author_name}
+                {/* {log.id} */}
               </span>
             </div>
             <div className="tracking-tighter text-xs text-neutral-500 group-hover:text-neutral-600">
-              {timeDiff}
+              {log.timeOff}
             </div>
           </div>
         </div>
@@ -52,7 +37,7 @@ export function LogCard({ ...props }: CardProps) {
           <div className="flex items-center">
             <Circle className="h-2 w-2 mr-2" fill="#ff5544" color="fff" />
             <span className="font-bold tracking-tighter text-xs uppercase text-neutral-500 group-hover:text-neutral-600">
-              {props.location}
+              {log.location}
             </span>
             <div>
               <LightbulbOff className="h-4 w-4 ml-2 hover:text-[#ff5544]" />
@@ -72,8 +57,10 @@ export function LogCard({ ...props }: CardProps) {
                 stroke="#E00000"
               />
             </svg>
-            <div className="text-[#E00000] text-xs tracking-tighter">
-              High dumsor area
+            <div className="text-black text-xs tracking-tighter">
+              {log.timeBackOn === "0"
+                ? "Still off"
+                : `Time back: ${log.timeBackOn}`}
             </div>
           </div>
         </div>
