@@ -34,6 +34,7 @@ export default function UserProfileDropdown() {
       toast.error("Error signing out. Please try again.");
     }
   };
+
   return (
     <AlertDialog>
       <DropdownMenu>

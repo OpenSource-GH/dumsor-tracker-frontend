@@ -23,9 +23,21 @@ async function continueWithGoogle() {
 }
 
 async function signOut(): Promise<{error?: string}> {
+
+  // Signout for supabase user
+  const supabase = await createClient();
+  const supabaseUser = await supabase.auth.getUser();
+  if (supabaseUser.data.user) {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      return {error: "Failure to sign out"};
+    }
+  }
+
+  // Signout for all other users
   let success = false;
   try {
-    const res = await fetch("https://api.dumsor.xyz/api/v1/users/losgout", {
+    const res = await fetch("https://api.dumsor.xyz/api/v1/users/logout", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -55,7 +67,7 @@ async function getCurrentUser() {
     redirect("/sign-in");
   }
 
-  return user;
+  return JSON.parse(JSON.stringify(user));
 }
 
 export { continueWithGoogle, getCurrentUser, signOut };
