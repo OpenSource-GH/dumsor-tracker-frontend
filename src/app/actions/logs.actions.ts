@@ -29,4 +29,18 @@ async function createLog(payload: any) {
   return response.json();
 }
 
-export { createLog };
+async function getLogs() {
+  const url = new URL(`${BASE_URL}/logs`);
+  const response = await fetch(url, {
+    method: "GET",
+  });
+
+  if (!response.ok) {
+    const msg = await response.text();
+    throw new Error(msg);
+  }
+
+  return response.json();
+}
+
+export { createLog, getLogs };
