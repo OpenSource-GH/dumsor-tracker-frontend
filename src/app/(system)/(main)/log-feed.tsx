@@ -3,11 +3,9 @@ import LogCard from "@/components/cards/log-card";
 
 type Log = {
   _id: string;
-  id: string;
   location: string;
   timeOff: string;
   timeBackOn: string;
-  __v: number;
 };
 
 type Props = {
