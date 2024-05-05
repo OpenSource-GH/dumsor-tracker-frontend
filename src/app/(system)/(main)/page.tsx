@@ -2,29 +2,11 @@ import { Button } from "@/components/ui/button";
 import Search from "@/components/ui/search-bar";
 import { PlusIcon } from "lucide-react";
 import Link from "next/link";
-import LogList from "./log-feed";
-import { createClient } from "@/utils/supabase/server";
 import { getLogs } from "../../actions/logs.actions";
+import LogList from "./log-feed";
 
 export default async function Home() {
-  const supabase = await createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  console.log(user);
-
-  let logs = [];
-
-  try {
-    const response = await getLogs();
-    logs = response.data.logs;
-    console.log(logs);
-  } catch (error) {
-    console.error("Error fetching logs:", error);
-  }
-
+  const response = await getLogs();
   return (
     <main>
       <div className="fixed bottom-5 right-5 p-5">
@@ -46,7 +28,7 @@ export default async function Home() {
         </div>
         <div className="w-full h-full border-l-2 border-dashed">
           <div className="ml-4">
-            <LogList data={logs} />
+            <LogList data={response.data.logs} />
           </div>
         </div>
       </div>
