@@ -1,14 +1,15 @@
 "use server";
 
-import { createClient } from "@/utils/supabase/server";
-import { redirect } from "next/navigation";
+import {createClient} from "@/utils/supabase/server";
+import {redirect} from "next/navigation";
+import {NextResponse} from "next/server";
 
 const BASE_URL = `${process.env.NEXT_PUBLIC_API_BASE_URL}`;
 
 async function continueWithGoogle() {
   const supabase = await createClient();
 
-  const { data, error } = await supabase.auth.signInWithOAuth({
+  const {data, error} = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
       redirectTo: "http://localhost:3000/auth/callback",
@@ -24,13 +25,13 @@ async function continueWithGoogle() {
   }
 }
 
-async function signOut(): Promise<{error?: string}> {
+async function signOut(): Promise<{ error?: string }> {
 
   // Signout for supabase user
   const supabase = await createClient();
   const supabaseUser = await supabase.auth.getUser();
   if (supabaseUser.data.user) {
-    const { error } = await supabase.auth.signOut();
+    const {error} = await supabase.auth.signOut();
     if (error) {
       return {error: "Failure to sign out"};
     }
@@ -77,19 +78,22 @@ type SignInWithCredentialsPayload = {
   password: string;
 };
 
-async function signInWithCredentials(payload: SignInWithCredentialsPayload) {
-  const url = new URL(`${BASE_URL}/users/login`);
+async function signInWithCredentials(payload: SignInWithCredentialsPayload, forSignUp: boolean = false) {
+  const url = forSignUp ? `${BASE_URL}/users/signup` : `${BASE_URL}/users/login`;
   const response = await fetch(url, {
     method: "POST",
-    body: JSON.stringify(payload),
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload)
   });
-
   if (!response.ok) {
     const msg = await response.text();
     throw new Error(msg);
   }
 
-  return response.json();
+  return await response.json();
 }
 
-export { continueWithGoogle, getCurrentUser, signOut, signInWithCredentials };
+export {continueWithGoogle, getCurrentUser, signOut, signInWithCredentials};

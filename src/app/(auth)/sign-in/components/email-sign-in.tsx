@@ -1,7 +1,7 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
+import {Button} from "@/components/ui/button";
+import {Checkbox} from "@/components/ui/checkbox";
 import {
   Form,
   FormControl,
@@ -10,16 +10,16 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import {Input} from "@/components/ui/input";
 import Loader from "@/components/ui/loader";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Mail } from "lucide-react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-import { z } from "zod";
-import { signInWithCredentials } from "@/app/actions/auth.actions";
-import { useRouter } from "next/navigation";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {Mail} from "lucide-react";
+import {useState} from "react";
+import {useForm} from "react-hook-form";
+import {toast} from "sonner";
+import {z} from "zod";
+import {signInWithCredentials} from "@/app/actions/auth.actions";
+import {useRouter} from "next/navigation";
 
 const FormSchema = z.object({
   email: z.string().email({
@@ -46,7 +46,8 @@ function EmailSignIn() {
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     setIsSubmitting(true);
     try {
-      await signInWithCredentials(data);
+      const result = await signInWithCredentials(data);
+      console.log("result", result);
       router.replace("/");
     } catch (e) {
       toast.error("Failed to sign-in");
@@ -62,32 +63,32 @@ function EmailSignIn() {
         <FormField
           control={form.control}
           name="email"
-          render={({ field }) => (
+          render={({field}) => (
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
                 <Input {...field} />
               </FormControl>
-              <FormMessage />
+              <FormMessage/>
             </FormItem>
           )}
         />
-        <br />
+        <br/>
         <FormField
           control={form.control}
           name="password"
-          render={({ field }) => (
+          render={({field}) => (
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input {...field} type={isOpen ? "text" : "password"} />
+                <Input {...field} type={isOpen ? "text" : "password"}/>
               </FormControl>
-              <FormMessage />
+              <FormMessage/>
             </FormItem>
           )}
         />
         <div className="flex items-center space-x-2 mt-5">
-          <Checkbox id="terms" onClick={() => setIsOpen(!isOpen)} />
+          <Checkbox id="terms" onClick={() => setIsOpen(!isOpen)}/>
           <label
             htmlFor="terms"
             className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -95,13 +96,13 @@ function EmailSignIn() {
             Show Password
           </label>
         </div>
-        <br />
+        <br/>
         <Button type="submit" className="w-full items-center gap-3">
           {isSubmitting ? (
-            <Loader width="20" height="20" color="orange" />
+            <Loader width="20" height="20" color="orange"/>
           ) : (
             <>
-              <Mail />
+              <Mail/>
               Sign in with Email
             </>
           )}

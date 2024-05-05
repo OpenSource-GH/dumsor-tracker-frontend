@@ -20,7 +20,7 @@ export default async function Home() {
   try {
     const response = await getLogs();
     logs = response.data.logs;
-    console.log(logs);
+    // console.log(logs);
   } catch (error) {
     console.error("Error fetching logs:", error);
   }
