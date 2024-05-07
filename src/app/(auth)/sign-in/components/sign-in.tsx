@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FcGoogle } from "react-icons/fc";
 import { toast } from "sonner";
-import { continueWithGoogle } from "../../../actions/auth.actions";
+import { continueWithGoogle } from "@/app/actions/auth.actions";
 import EmailSignIn from "./email-sign-in";
 import PhoneSignIn from "./phone-sign-in";
 

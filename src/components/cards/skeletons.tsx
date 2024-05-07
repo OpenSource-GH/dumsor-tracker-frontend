@@ -8,6 +8,9 @@ export function PageSkeleton() {
       <div className="py-6">
         <Skeleton className="h-6 w-full rounded-full" />
       </div>
+      <div>
+        <Skeleton className="h-6 w-full rounded-full" />
+      </div>
       <div className="w-full h-full border-l-2 border-dashed">
         <div className="ml-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
