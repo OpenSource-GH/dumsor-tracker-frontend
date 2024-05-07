@@ -1,6 +1,7 @@
 "use server";
 
 import { createClient } from "@/utils/supabase/server";
+import { revalidatePath } from "next/cache";
 
 const BASE_URL = `${process.env.NEXT_PUBLIC_API_BASE_URL}`;
 
@@ -43,4 +44,18 @@ async function getLogs() {
   return response.json();
 }
 
-export { createLog, getLogs };
+async function getRecentLogs() {
+  const response = await getLogs();
+
+  if (!response || !response.data || !Array.isArray(response.data.logs)) {
+    throw new Error("An error occurred while fetching recent logs");
+  }
+
+  const logs = response.data.logs.reverse().splice(0, 20);
+
+  return logs;
+}
+
+revalidatePath("/");
+
+export { createLog, getLogs, getRecentLogs };
