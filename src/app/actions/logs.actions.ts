@@ -46,7 +46,6 @@ async function getLogs() {
 
 async function getRecentLogs() {
   const response = await getLogs();
-  console.log(response.data.results);
 
   if (!response || !response.data || !Array.isArray(response.data.logs)) {
     throw new Error("An error occurred while fetching recent logs");
