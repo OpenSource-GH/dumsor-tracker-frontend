@@ -37,7 +37,7 @@ export default async function Home() {
               Recent
             </TabsTrigger>
             <TabsTrigger value="all posts" className="w-full">
-              All Posts
+              All Logs
             </TabsTrigger>
           </TabsList>
           <TabsContent value="recent">
