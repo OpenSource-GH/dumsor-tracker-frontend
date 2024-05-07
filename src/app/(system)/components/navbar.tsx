@@ -1,6 +1,7 @@
 import UserProfileDropdown from "@/app/(system)/components/user-profile-dropdown";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { createClient } from "@/utils/supabase/server";
 import { Lightbulb, Menu, Package2 } from "lucide-react";
 import Link from "next/link";
 import { ReactNode } from "react";
@@ -9,7 +10,10 @@ type Props = {
   children: ReactNode;
 };
 
-function Navbar({ children }: Props) {
+async function Navbar({ children }: Props) {
+  const supabase = await createClient();
+  const user = await supabase.auth.getUser();
+
   return (
     <div className="flex min-h-screen w-full flex-col">
       <header className="sticky z-[20] top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
@@ -49,7 +53,22 @@ function Navbar({ children }: Props) {
           </SheetContent>
         </Sheet>
         <div className="flex justify-end w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
-          <UserProfileDropdown />
+          {user.data.user?.aud === "authenticated" ? (
+            <UserProfileDropdown />
+          ) : (
+            <div className="flex items-center gap-5">
+              <Link
+                href="/sign-in"
+              >
+                Log In
+              </Link>
+              <Link
+                href="/sign-up"
+              >
+                Sign Up
+              </Link>
+            </div>
+          )}
         </div>
       </header>
       <main>{children}</main>
