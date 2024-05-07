@@ -3,8 +3,8 @@ import Search from "@/components/ui/search-bar";
 import { PlusIcon } from "lucide-react";
 import Link from "next/link";
 import { getLogs, getRecentLogs } from "../../actions/logs.actions";
-import LogList from "./(feed)/log-feed";
-import RecentLogList from "./(feed)/recent-log-feed";
+import LogList from "@/app/(system)/(main)/feed/log-feed";
+import RecentLogList from "@/app/(system)/(main)/feed/recent-log-feed";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import React from "react";
 
