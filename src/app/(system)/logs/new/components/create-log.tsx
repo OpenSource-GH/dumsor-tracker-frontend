@@ -31,7 +31,11 @@ const formSchema = z.object({
   }),
 });
 
-function CreateLogForm() {
+type Props = {
+  user_id: string;
+};
+
+function CreateLogForm({ ...props }: Props) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const date = getCurrentDate();
@@ -46,7 +50,7 @@ function CreateLogForm() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const payload = { ...values, timeBackOn: "0:00" };
+    const payload = { ...values, timeBackOn: "0:00", createdBy: props.user_id };
     setIsSubmitting(true);
     try {
       await createLog(payload);

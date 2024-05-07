@@ -8,8 +8,18 @@ import RecentLogList from "@/app/(system)/(main)/feed/recent-log-feed";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import React from "react";
 
-export default async function Home() {
-  const response = await getLogs();
+export default async function Home({
+  searchParams,
+}: {
+  searchParams?: {
+    page?: string;
+    location?: string;
+  };
+}) {
+  const response = await getLogs({
+    location: searchParams?.location!,
+    page: searchParams?.page!,
+  });
   const recent = await getRecentLogs();
 
   return (
@@ -29,7 +39,7 @@ export default async function Home() {
           </p>
         </div>
         <div className="py-6">
-          <Search placeholder="Search Posts" />
+          <Search placeholder="Search By Location" />
         </div>
         <Tabs defaultValue="recent" className="w-full mb-6">
           <TabsList className="w-full mb-2">

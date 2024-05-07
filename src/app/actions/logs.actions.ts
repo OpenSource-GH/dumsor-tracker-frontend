@@ -30,8 +30,19 @@ async function createLog(payload: any) {
   return response.json();
 }
 
-async function getLogs() {
-  const url = new URL(`${BASE_URL}/logs`);
+type searchQuery = {
+  location?: string;
+  page?: string;
+};
+async function getLogs({ ...params }: searchQuery) {
+  let url;
+  params.location || params.page
+    ? (url = new URL(
+        `${BASE_URL}/logs?page=${params.page}&location=${params.location}`
+      ))
+    : (url = new URL(
+        `${BASE_URL}/logs`
+      ));
   const response = await fetch(url, {
     method: "GET",
   });
@@ -45,7 +56,7 @@ async function getLogs() {
 }
 
 async function getRecentLogs() {
-  const response = await getLogs();
+  const response = await getLogs({ page: "1", location: "" });
 
   if (!response || !response.data || !Array.isArray(response.data.logs)) {
     throw new Error("An error occurred while fetching recent logs");

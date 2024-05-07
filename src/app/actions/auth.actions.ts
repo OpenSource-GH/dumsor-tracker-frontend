@@ -76,19 +76,23 @@ type SignInWithCredentialsPayload = {
   password: string;
 };
 
-async function signInWithCredentials(payload: SignInWithCredentialsPayload) {
-  const url = new URL(`${BASE_URL}/users/login`);
+
+async function AuthenticateWithCredentials(payload: SignInWithCredentialsPayload, forSignUp: boolean = false) {
+  const url = forSignUp ? `${BASE_URL}/users/signup` : `${BASE_URL}/users/login`;
   const response = await fetch(url, {
     method: "POST",
-    body: JSON.stringify(payload),
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload)
   });
-
   if (!response.ok) {
     const msg = await response.text();
     throw new Error(msg);
   }
 
-  return response.json();
+  return await response.json();
 }
 
-export { continueWithGoogle, getCurrentUser, signOut, signInWithCredentials };
+export { continueWithGoogle, getCurrentUser, signOut, AuthenticateWithCredentials };

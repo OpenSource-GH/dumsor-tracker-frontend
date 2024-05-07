@@ -1,5 +1,6 @@
 "use client";
 
+import { AuthenticateWithCredentials } from "@/app/actions/auth.actions";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -40,11 +41,17 @@ function EmailSignUp() {
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
     setIsSubmitting(true);
-    toast("Data has been submitted");
-    console.log(data);
-    setIsSubmitting(false);
+    try {
+      await AuthenticateWithCredentials(data, true);
+      toast.success("A link has been sent to your email.");
+    } catch (e) {
+      toast.error("Failed to sign-up");
+      console.error((e as Error)?.message);
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
