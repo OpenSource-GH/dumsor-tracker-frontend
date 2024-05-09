@@ -43,7 +43,7 @@ export default function UserProfileDropdown() {
             <Avatar
               size={30}
               name="Client"
-              variant="beam"
+              variant="marble"
               colors={["#92A1C6", "#146A7C", "#F0AB3D", "#C271B4", "#C20D90"]}
             />
           </div>

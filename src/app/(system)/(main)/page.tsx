@@ -26,7 +26,7 @@ export default async function Home({
     location: searchParams?.location!,
     page: String(Number(searchParams?.page) + 1)!,
   });
-  
+
   const recent = await getRecentLogs();
 
   return (
@@ -79,13 +79,15 @@ export default async function Home({
             <br />
             <div>
               <div className="flex gap-5 w-full justify-end items-center">
-                <Link
-                  href={`http://localhost:3000/?page=${
-                    Number(searchParams?.page) - 1
-                  }`}
-                >
-                  Previous
-                </Link>
+                {Number(searchParams?.page) > 1 && (
+                  <Link
+                    href={`http://localhost:3000/?page=${
+                      Number(searchParams?.page) - 1
+                    }`}
+                  >
+                    Previous
+                  </Link>
+                )}
                 {next_page.data.logs.length > 0 && (
                   <Link
                     href={`http://localhost:3000/?page=${

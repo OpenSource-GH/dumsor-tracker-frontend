@@ -50,13 +50,13 @@ function CreateLogForm({ ...props }: Props) {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const payload = { ...values, timeBackOn: "0:00", userId: props.user_id };
+    const payload = { ...values, timeBackOn: "0", userId: props.user_id };
     setIsSubmitting(true);
     try {
       await createLog(payload);
       form.reset();
       toast.success("Log Created!");
-      router.push("/");
+      router.push("/?page=1");
     } catch (e) {
       toast.error("Failed to create log");
       console.error((e as Error)?.message);

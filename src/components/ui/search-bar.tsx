@@ -14,7 +14,6 @@ export default function Search({ placeholder }: { placeholder: string }) {
       params.set("location", term);
     } else {
       params.delete("location");
-      params.delete("page");
     }
     replace(`${pathname}?${params.toString()}`);
   }, 200);
