@@ -62,9 +62,11 @@ export default async function Home({
               </div>
             </div>
             <div>
-              <h3 className="text-center text-sm text-neutral-500 py-6">
-                That's all for now.
-              </h3>
+              {recent.length > 0 && (
+                <h3 className="text-center text-sm text-neutral-500 py-6">
+                  That's all for now.
+                </h3>
+              )}
             </div>
           </TabsContent>
           <TabsContent value="all posts">
