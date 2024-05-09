@@ -90,9 +90,13 @@ export default async function Home({
                 )}
                 {next_page.data.logs.length > 0 && (
                   <Link
-                    href={`http://localhost:3000/?page=${
-                      Number(searchParams?.page) + 1
-                    }`}
+                    href={
+                      !searchParams?.page || Number(searchParams?.page) < 1
+                        ? `http://localhost:3000/?page=2`
+                        : `http://localhost:3000/?page=${
+                            Number(searchParams?.page) + 1
+                          }`
+                    }
                   >
                     Next
                   </Link>

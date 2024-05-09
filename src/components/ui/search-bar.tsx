@@ -29,7 +29,7 @@ export default function Search({ placeholder }: { placeholder: string }) {
         onChange={(e) => {
           handleSearch(e.target.value);
         }}
-        defaultValue={""}
+        defaultValue={searchParams.get("location")?.toString()}
       />
     </div>
   );
