@@ -36,13 +36,11 @@ type searchQuery = {
 };
 async function getLogs({ ...params }: searchQuery) {
   let url;
-  params.location || params.page
+  params.location && params.page
     ? (url = new URL(
         `${BASE_URL}/logs?page=${params.page}&location=${params.location}`
       ))
-    : (url = new URL(
-        `${BASE_URL}/logs`
-      ));
+    : (url = new URL(`${BASE_URL}/logs?page=${params.page}`));
   const response = await fetch(url, {
     method: "GET",
   });

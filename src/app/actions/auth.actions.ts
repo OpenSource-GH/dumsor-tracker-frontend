@@ -1,5 +1,5 @@
 "use server";
-
+import { EmailCredentialsPayload, PhoneCredentialsPayload } from "@/types";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 
@@ -22,6 +22,48 @@ async function continueWithGoogle() {
   if (data.url) {
     redirect(data.url);
   }
+}
+
+async function continueWithPhoneNumber(payload: PhoneCredentialsPayload) {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase.auth.signInWithOtp({
+    phone: payload.phone,
+  });
+
+  if (error) {
+    throw new Error(`${error}`);
+  }
+
+  if (data.session) {
+    redirect("/");
+  }
+}
+
+async function signInWithCredentials(payload: EmailCredentialsPayload) {
+  const supabase = await createClient();
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: payload.email,
+    password: payload.password,
+  });
+  if (error) {
+    throw new Error(`${error}`);
+  }
+
+  return data;
+}
+
+async function signUpWithCredentials(payload: EmailCredentialsPayload) {
+  const supabase = await createClient();
+  const { data, error } = await supabase.auth.signUp({
+    email: payload.email,
+    password: payload.password,
+  });
+  if (error) {
+    throw new Error(`${error}`);
+  }
+
+  return data;
 }
 
 async function signOut(): Promise<{ error?: string }> {
@@ -59,40 +101,10 @@ async function signOut(): Promise<{ error?: string }> {
   }
 }
 
-async function getCurrentUser() {
-  const supabase = await createClient();
-
-  const user = await supabase.auth.getUser();
-
-  if (!user) {
-    redirect("/sign-in");
-  }
-
-  return JSON.parse(JSON.stringify(user));
-}
-
-type SignInWithCredentialsPayload = {
-  email: string;
-  password: string;
+export {
+  continueWithGoogle,
+  continueWithPhoneNumber,
+  signOut,
+  signUpWithCredentials,
+  signInWithCredentials,
 };
-
-
-async function AuthenticateWithCredentials(payload: SignInWithCredentialsPayload, forSignUp: boolean = false) {
-  const url = forSignUp ? `${BASE_URL}/users/signup` : `${BASE_URL}/users/login`;
-  const response = await fetch(url, {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(payload)
-  });
-  if (!response.ok) {
-    const msg = await response.text();
-    throw new Error(msg);
-  }
-
-  return await response.json();
-}
-
-export { continueWithGoogle, getCurrentUser, signOut, AuthenticateWithCredentials };

@@ -1,5 +1,6 @@
 "use client";
 
+import { continueWithPhoneNumber } from "@/app/actions/auth.actions";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -13,8 +14,10 @@ import {
 import { Input } from "@/components/ui/input";
 import Loader from "@/components/ui/loader";
 import { validators } from "@/utils";
+import { normalizeSupabaseError } from "@/utils/errors";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Phone } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -30,6 +33,7 @@ const FormSchema = z.object({
 });
 
 function PhoneSignUp() {
+  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -38,11 +42,18 @@ function PhoneSignUp() {
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
     setIsSubmitting(true);
-    toast("Data has been submitted");
-    console.log(data);
-    setIsSubmitting(false);
+    try {
+      await continueWithPhoneNumber({ phone: data.phone_number });
+      form.reset();
+      router.push(`/verify-otp/${data.phone_number}`);
+    } catch (e: any) {
+      toast.error(`${normalizeSupabaseError((e as Error)?.message)}`);
+      console.error((e as Error)?.message);
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (

@@ -50,7 +50,7 @@ function CreateLogForm({ ...props }: Props) {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const payload = { ...values, timeBackOn: "0:00", createdBy: props.user_id };
+    const payload = { ...values, timeBackOn: "0:00", userId: props.user_id };
     setIsSubmitting(true);
     try {
       await createLog(payload);
