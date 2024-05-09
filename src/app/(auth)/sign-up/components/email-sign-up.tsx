@@ -1,6 +1,6 @@
 "use client";
 
-import { AuthenticateWithCredentials } from "@/app/actions/auth.actions";
+import { signUpWithCredentials } from "@/app/actions/auth.actions";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -13,8 +13,10 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Loader from "@/components/ui/loader";
+import { normalizeSupabaseError } from "@/utils/errors";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Mail } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -30,6 +32,7 @@ const FormSchema = z.object({
 });
 
 function EmailSignUp() {
+  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -44,10 +47,13 @@ function EmailSignUp() {
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     setIsSubmitting(true);
     try {
-      await AuthenticateWithCredentials(data, true);
+      await signUpWithCredentials(data);
       toast.success("A link has been sent to your email.");
-    } catch (e) {
-      toast.error("Failed to sign-up");
+      form.reset();
+      router.push("/sign-in");
+      router;
+    } catch (e: any) {
+      toast.error(`${normalizeSupabaseError((e as Error)?.message)}`);
       console.error((e as Error)?.message);
     } finally {
       setIsSubmitting(false);

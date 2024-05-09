@@ -20,6 +20,13 @@ export default async function Home({
     location: searchParams?.location!,
     page: searchParams?.page!,
   });
+
+  //make all call for the next page. using this for pagination
+  const next_page = await getLogs({
+    location: searchParams?.location!,
+    page: String(Number(searchParams?.page) + 1)!,
+  });
+  
   const recent = await getRecentLogs();
 
   return (
@@ -38,9 +45,7 @@ export default async function Home({
             View logs of power outages across the country
           </p>
         </div>
-        <div className="py-6">
-          <Search placeholder="Search By Location" />
-        </div>
+        <br />
         <Tabs defaultValue="recent" className="w-full mb-6">
           <TabsList className="w-full mb-2">
             <TabsTrigger value="recent" className="w-full">
@@ -63,12 +68,34 @@ export default async function Home({
             </div>
           </TabsContent>
           <TabsContent value="all posts">
+            <div className="py-6">
+              <Search placeholder="Search By Location" />
+            </div>
             <div className="w-full h-full border-l-2 border-dashed">
               <div className="ml-4">
-                <LogList data={response.data.logs.reverse()} />
+                <LogList data={response.data.logs} />
               </div>
             </div>
+            <br />
             <div>
+              <div className="flex gap-5 w-full justify-end items-center">
+                <Link
+                  href={`http://localhost:3000/?page=${
+                    Number(searchParams?.page) - 1
+                  }`}
+                >
+                  Previous
+                </Link>
+                {next_page.data.logs.length > 0 && (
+                  <Link
+                    href={`http://localhost:3000/?page=${
+                      Number(searchParams?.page) + 1
+                    }`}
+                  >
+                    Next
+                  </Link>
+                )}
+              </div>
               <h3 className="text-center text-sm text-neutral-500 py-6">
                 Oops, you reached the end.
               </h3>
