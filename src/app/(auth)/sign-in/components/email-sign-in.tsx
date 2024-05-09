@@ -48,7 +48,7 @@ function EmailSignIn() {
     setIsSubmitting(true);
     try {
       await signInWithCredentials(data);
-      router.replace("/");
+      router.replace("/?page=1");
     } catch (e: any) {
       toast.error(`${normalizeSupabaseError((e as Error)?.message)}`);
       console.error((e as Error)?.message);
