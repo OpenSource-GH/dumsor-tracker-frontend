@@ -20,6 +20,13 @@ export default async function Home({
     location: searchParams?.location!,
     page: searchParams?.page!,
   });
+
+  //make all call for the next page. using this for pagination
+  const next_page = await getLogs({
+    location: searchParams?.location!,
+    page: String(Number(searchParams?.page) + 1)!,
+  });
+  
   const recent = await getRecentLogs();
 
   return (
@@ -79,7 +86,7 @@ export default async function Home({
                 >
                   Previous
                 </Link>
-                {response.data.logs.length > 0 && (
+                {next_page.data.logs.length > 0 && (
                   <Link
                     href={`http://localhost:3000/?page=${
                       Number(searchParams?.page) + 1
