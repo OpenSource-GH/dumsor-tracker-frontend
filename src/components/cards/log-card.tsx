@@ -13,7 +13,7 @@ export function LogCard({ log }: { log: Log }) {
   return (
     <Link href={`/logs/update/${log._id}`}>
       <div className="w-full h-16 group rounded-md cursor-pointer border hover:border-neutral-400 border-neutral-200 shadow-sm p-2 flex items-center justify-between">
-        <div className="font-bold tracking-tighter text-xs uppercase dark:text-neutral-400 text-neutral-700 group-hover:text-neutral-400 z-20">
+        <div className="font-bold w-[60%] tracking-tighter text-xs uppercase dark:text-neutral-400 text-neutral-700 group-hover:text-neutral-400 z-20">
           <Map
             className="h-8 w-4 mr-2 inline-flex"
             color="#000"
@@ -29,12 +29,12 @@ export function LogCard({ log }: { log: Log }) {
           <div className="text-neutral-500 dark:text-neutral-400 text-[0.6rem] tracking-tighter uppercase font-bold">
             {log.timeBackOn === "0" ? (
               <>
-                <LightbulbOff className="h-4 w-4 mr-2 text-red-700 dark:text-[#ff5544] inline-flex" />
+                <LightbulbOff className="h-4 w-4 mr-1 text-red-700 dark:text-[#ff5544] inline-flex" />
                 Still off
               </>
             ) : (
               <>
-                <Lightbulb className="h-4 w-4 mr-2 text-green-700 dark:text-[#00ff00] inline-flex" />
+                <Lightbulb className="h-4 w-4 mr-1 text-green-700 dark:text-[#00ff00] inline-flex" />
                 Time back: {log.timeBackOn}
               </>
             )}
