@@ -38,7 +38,7 @@ async function getLogs({ ...params }: searchQuery) {
   let url;
   params.location && params.page
     ? (url = new URL(
-        `${BASE_URL}/logs?page=${params.page}&location=${params.location}`
+        `${BASE_URL}/logs?page=${params.page}&location=${params.location}`,
       ))
     : (url = new URL(`${BASE_URL}/logs?page=${params.page}`));
   const response = await fetch(url, {
@@ -60,7 +60,7 @@ async function getRecentLogs() {
     throw new Error("An error occurred while fetching recent logs");
   }
 
-  const logs = response.data.logs.reverse().splice(0, 20);
+  const logs = response.data.logs;
 
   return logs;
 }

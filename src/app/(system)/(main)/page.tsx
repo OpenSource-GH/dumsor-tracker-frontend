@@ -21,7 +21,7 @@ export default async function Home({
     page: searchParams?.page!,
   });
 
-  //make all call for the next page. using this for pagination
+  // make all calls for the next page. using this for pagination
   const next_page = await getLogs({
     location: searchParams?.location!,
     page: String(Number(searchParams?.page) + 1)!,
@@ -78,7 +78,7 @@ export default async function Home({
             </div>
             <br />
             <div>
-              <div className="flex gap-5 w-full justify-end items-center">
+              <div className="flex gap-5 w-full justify-end items-center text-sm">
                 {Number(searchParams?.page) > 1 && (
                   <Link
                     href={`http://localhost:3000/?page=${
@@ -98,9 +98,13 @@ export default async function Home({
                   </Link>
                 )}
               </div>
-              <h3 className="text-center text-sm text-neutral-500 py-6">
-                Oops, you reached the end.
-              </h3>
+              <div>
+                {next_page.data.logs.length === 0 && (
+                  <h3 className="text-center text-sm text-neutral-500 py-6">
+                    Oops, you reached the end.
+                  </h3>
+                )}
+              </div>
             </div>
           </TabsContent>
         </Tabs>
