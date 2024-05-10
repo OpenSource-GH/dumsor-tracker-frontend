@@ -1,6 +1,7 @@
 "use server";
 
 import { createClient } from "@/utils/supabase/server";
+import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 
 const BASE_URL = `${process.env.NEXT_PUBLIC_API_BASE_URL}`;
@@ -27,6 +28,49 @@ async function createLog(payload: any) {
     throw new Error(msg);
   }
 
+  revalidatePath("/");
+
+  return response.json();
+}
+
+// Get One Log
+async function getLog(id: string) {
+  const url = new URL(`${BASE_URL}/logs/${id}`);
+  const response = await fetch(url, {
+    method: "GET",
+  });
+  if (!response.ok) {
+    redirect("/");
+  }
+
+  return response.json();
+}
+
+// Update Logs
+async function updateLogs(payload: any) {
+  const supabase = await createClient();
+
+  const {
+    data: { session: supabaseSession },
+  } = await supabase.auth.getSession();
+
+  const url = new URL(`${BASE_URL}/logs/${payload.id}`);
+  console.log(payload);
+  const response = await fetch(url, {
+    method: "PATCH",
+    body: JSON.stringify(payload.values),
+    headers: {
+      Authorization: `Bearer ${supabaseSession?.access_token}`,
+      "Content-Type": "application/json",
+    },
+  });
+  if (!response.ok) {
+    const msg = await response.text();
+    throw new Error(msg);
+  }
+
+  revalidatePath("/");
+
   return response.json();
 }
 
@@ -34,6 +78,7 @@ type searchQuery = {
   location?: string;
   page?: string;
 };
+
 async function getLogs({ ...params }: searchQuery) {
   let url;
   params.location && params.page
@@ -65,6 +110,4 @@ async function getRecentLogs() {
   return logs;
 }
 
-revalidatePath("/");
-
-export { createLog, getLogs, getRecentLogs };
+export { createLog, getLogs, getLog, getRecentLogs, updateLogs };
