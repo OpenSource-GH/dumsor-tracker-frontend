@@ -14,7 +14,11 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Loader from "@/components/ui/loader";
-import { getCurrentDate, getCurrentTime } from "@/utils/date";
+import {
+  getCurrentDate,
+  getCurrentFormattedTime,
+  getCurrentTime,
+} from "@/utils/date";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -38,8 +42,10 @@ type Props = {
 function CreateLogForm({ ...props }: Props) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [currentTime, setCurrentTime] = useState(false);
   const date = getCurrentDate();
   const time = getCurrentTime();
+  const formattedTime = getCurrentFormattedTime();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -110,11 +116,16 @@ function CreateLogForm({ ...props }: Props) {
                     {...field}
                     type="time"
                     className="placeholder:text-neutral-500"
+                    value={currentTime ? formattedTime : ""}
+                    disabled={currentTime}
                   />
                 </FormControl>
                 <br />
                 <div className="flex items-center gap-3">
-                  <Checkbox />
+                  <Checkbox
+                    checked={currentTime}
+                    onCheckedChange={() => setCurrentTime(!currentTime)}
+                  />
                   <p className="text-sm">Use current time</p>
                 </div>
               </FormItem>
