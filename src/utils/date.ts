@@ -48,3 +48,15 @@ export function getCurrentTime(): string {
   const time = `${hour}.${minute < 10 ? "0" : ""}${minute}${period}`;
   return time;
 }
+
+export function getCurrentFormattedTime(): string {
+  const today: Date = new Date();
+  const hour: number = today.getHours();
+  const minute: number = today.getMinutes();
+
+  const hourStr: string = hour < 10 ? "0" + hour : "" + hour;
+  const minuteStr: string = minute < 10 ? "0" + minute : "" + minute;
+
+  const time = `${hourStr}:${minuteStr}`;
+  return time;
+}

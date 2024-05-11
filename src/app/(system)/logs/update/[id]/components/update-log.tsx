@@ -7,13 +7,22 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel
+  FormLabel,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { getCurrentDate, getCurrentTime } from "@/utils/date";
+import {
+  getCurrentDate,
+  getCurrentFormattedTime,
+  getCurrentTime,
+} from "@/utils/date";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { updateLogs } from "@/app/actions/logs.actions";
+import Loader from "@/components/ui/loader";
 
 const formSchema = z.object({
   location: z.string().min(1, {
@@ -29,23 +38,43 @@ const formSchema = z.object({
 
 type Props = {
   id: string;
+  location: string;
+  timeBackOn: any;
+  timeOff: any;
 };
 
-function UpdateLogForm({ id }: Props) {
+function UpdateLogForm({ id, location, timeOff, timeBackOn }: Props) {
+  const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [currentTime, setCurrentTime] = useState(false);
   const date = getCurrentDate();
   const time = getCurrentTime();
+  const formattedTime = getCurrentFormattedTime();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      location: "",
-      timeOff: "",
-      timeBackOn: "",
+      location: location,
+      timeOff: timeOff,
+      timeBackOn: timeBackOn,
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values, id);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const payload = { values, id };
+    setIsSubmitting(true);
+    try {
+      await updateLogs(payload);
+      toast.success("Log Updated!");
+
+      // revalidatePath("/");
+      router.push("/?page=1");
+    } catch (e) {
+      toast.error("Failed to update log");
+      console.error((e as Error)?.message);
+    } finally {
+      setIsSubmitting(false);
+    }
   }
   return (
     <div className="my-8 w-full h-full">
@@ -108,11 +137,16 @@ function UpdateLogForm({ id }: Props) {
                     {...field}
                     type="time"
                     className="placeholder:text-neutral-500"
+                    value={currentTime ? formattedTime : ""}
+                    disabled={currentTime}
                   />
                 </FormControl>
                 <br />
                 <div className="flex items-center gap-3">
-                  <Checkbox />
+                  <Checkbox
+                    checked={currentTime}
+                    onCheckedChange={() => setCurrentTime(!currentTime)}
+                  />
                   <p className="text-sm">Use current time</p>
                 </div>
               </FormItem>
@@ -123,7 +157,11 @@ function UpdateLogForm({ id }: Props) {
             size={"lg"}
             className="tracking-wide uppercase w-full my-4"
           >
-            Update Log
+            {isSubmitting ? (
+              <Loader width="20" height="20" color="orange" />
+            ) : (
+              <>Update Log</>
+            )}
           </Button>
         </form>
       </Form>

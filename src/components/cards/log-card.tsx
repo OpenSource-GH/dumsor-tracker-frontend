@@ -11,7 +11,7 @@ interface Log {
 
 export function LogCard({ log }: { log: Log }) {
   return (
-    <Link href={`/logs/update/${log._id}`}>
+    <Link href={`/logs/${log._id}`}>
       <div className="w-full h-16 group rounded-md cursor-pointer border hover:border-neutral-400 border-neutral-200 shadow-sm p-2 flex items-center justify-between">
         <div className="font-bold w-[60%] tracking-tighter text-xs uppercase dark:text-neutral-400 text-neutral-700 group-hover:text-neutral-400 z-20">
           <Map
