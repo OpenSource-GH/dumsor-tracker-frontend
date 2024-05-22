@@ -42,9 +42,14 @@ function PhoneSignIn() {
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     setIsSubmitting(true);
     try {
-      await continueWithPhoneNumber({ phone: data.phone_number });
-      const phone_number = data.phone_number.replace("+", "");
-      router.push(`/verify-otp/${phone_number}`);
+      let phone = data.phone_number;
+
+      if (phone.startsWith("0")) {
+        phone = phone.replace("0", "233");
+      }
+
+      await continueWithPhoneNumber({ phone });
+      router.push(`/verify-otp/${phone}`);
       form.reset();
     } catch (e: any) {
       toast.error(`${normalizeSupabaseError((e as Error)?.message)}`);
@@ -64,19 +69,7 @@ function PhoneSignIn() {
             <FormItem>
               <FormLabel>Phone Number</FormLabel>
               <FormControl>
-                <Input
-                  {...field}
-                  onChange={(event) => {
-                    if (event.target.value.startsWith("0")) {
-                      event.target.value = event.target.value.replace(
-                        "0",
-                        "+233",
-                      );
-                    }
-
-                    field.onChange(event);
-                  }}
-                />
+                <Input {...field} />
               </FormControl>
               <FormDescription>
                 We will send an OTP to this number for verification.
