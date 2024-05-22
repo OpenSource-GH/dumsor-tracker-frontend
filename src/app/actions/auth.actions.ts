@@ -1,5 +1,9 @@
 "use server";
-import { EmailCredentialsPayload, PhoneCredentialsPayload } from "@/types";
+import {
+  EmailCredentialsPayload,
+  PhoneCredentialsPayload,
+  VerifyPhoneCredentialsPayload,
+} from "@/types";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 
@@ -29,6 +33,24 @@ async function continueWithPhoneNumber(payload: PhoneCredentialsPayload) {
 
   const { data, error } = await supabase.auth.signInWithOtp({
     phone: payload.phone,
+  });
+
+  if (error) {
+    throw new Error(`${error}`);
+  }
+
+  if (data.session) {
+    redirect("/");
+  }
+}
+
+async function verifyPhoneNumber(payload: VerifyPhoneCredentialsPayload) {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase.auth.verifyOtp({
+    phone: payload.phone,
+    token: payload.pin,
+    type: "sms",
   });
 
   if (error) {
@@ -107,4 +129,5 @@ export {
   signOut,
   signUpWithCredentials,
   signInWithCredentials,
+  verifyPhoneNumber,
 };

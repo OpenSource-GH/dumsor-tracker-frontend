@@ -6,6 +6,8 @@ function normalizeSupabaseError(error: string): string {
   const errorMap: { [key: string]: string } = {
     "AuthApiError: Invalid login credentials": "Invalid Credentials",
     "AuthApiError: Unsupported phone provider": "Unsupported Phone Provider",
+    "AuthApiError: Token has expired or is invalid":
+      "Token has expired or is invalid",
     // Add more error mappings here as needed
   };
 

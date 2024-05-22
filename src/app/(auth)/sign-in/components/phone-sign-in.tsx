@@ -26,10 +26,7 @@ import { z } from "zod";
 const FormSchema = z.object({
   phone_number: z
     .string()
-    .min(10, {
-      message: "Phone number must be at least 10 characters.",
-    })
-    .regex(validators.PhoneNumberRegex),
+    .regex(validators.PhoneNumberRegex, "Invalid Phone Number"),
 });
 
 function PhoneSignIn() {
@@ -46,8 +43,9 @@ function PhoneSignIn() {
     setIsSubmitting(true);
     try {
       await continueWithPhoneNumber({ phone: data.phone_number });
+      const phone_number = data.phone_number.replace("+", "");
+      router.push(`/verify-otp/${phone_number}`);
       form.reset();
-      router.push(`/verify-otp/${data.phone_number}`);
     } catch (e: any) {
       toast.error(`${normalizeSupabaseError((e as Error)?.message)}`);
       console.error((e as Error)?.message);
@@ -66,7 +64,19 @@ function PhoneSignIn() {
             <FormItem>
               <FormLabel>Phone Number</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input
+                  {...field}
+                  onChange={(event) => {
+                    if (event.target.value.startsWith("0")) {
+                      event.target.value = event.target.value.replace(
+                        "0",
+                        "+233",
+                      );
+                    }
+
+                    field.onChange(event);
+                  }}
+                />
               </FormControl>
               <FormDescription>
                 We will send an OTP to this number for verification.
