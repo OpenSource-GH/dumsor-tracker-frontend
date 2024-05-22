@@ -55,6 +55,16 @@ function CreateLogForm({ ...props }: Props) {
     },
   });
 
+  const handleCheckboxChange = () => {
+    const newUseCurrentTime = !currentTime;
+    setCurrentTime(newUseCurrentTime);
+    if (newUseCurrentTime) {
+      form.setValue("timeOff", formattedTime);
+    } else {
+      form.setValue("timeOff", "");
+    }
+  };
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const payload = { ...values, timeBackOn: "0", userId: props.user_id };
     setIsSubmitting(true);
@@ -124,7 +134,7 @@ function CreateLogForm({ ...props }: Props) {
                 <div className="flex items-center gap-3">
                   <Checkbox
                     checked={currentTime}
-                    onCheckedChange={() => setCurrentTime(!currentTime)}
+                    onCheckedChange={handleCheckboxChange}
                   />
                   <p className="text-sm">Use current time</p>
                 </div>
