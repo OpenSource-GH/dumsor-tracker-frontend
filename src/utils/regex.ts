@@ -1,3 +1,3 @@
 export const PhoneNumberRegex: RegExp = new RegExp(
-    /^0(2|5)(0|2|3|4|5|6|7|9)\d{7}$/,
+  /^\+?(?:[0-9] ?){6,14}[0-9]$/,
 );

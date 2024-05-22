@@ -1,7 +1,8 @@
 import React from "react";
+import VerifyOTPForm from "./components/verify";
 
 function VerifyOTPPage() {
-  return <div>VerifyOTPPage</div>;
+  return <VerifyOTPForm />;
 }
 
 export default VerifyOTPPage;

@@ -26,10 +26,7 @@ import { z } from "zod";
 const FormSchema = z.object({
   phone_number: z
     .string()
-    .min(10, {
-      message: "Phone number must be at least 10 characters.",
-    })
-    .regex(validators.PhoneNumberRegex),
+    .regex(validators.PhoneNumberRegex, "Invalid Phone Number"),
 });
 
 function PhoneSignIn() {
@@ -45,9 +42,15 @@ function PhoneSignIn() {
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     setIsSubmitting(true);
     try {
-      await continueWithPhoneNumber({ phone: data.phone_number });
+      let phone = data.phone_number;
+
+      if (phone.startsWith("0")) {
+        phone = phone.replace("0", "233");
+      }
+
+      await continueWithPhoneNumber({ phone });
+      router.push(`/verify-otp/${phone}`);
       form.reset();
-      router.push(`/verify-otp/${data.phone_number}`);
     } catch (e: any) {
       toast.error(`${normalizeSupabaseError((e as Error)?.message)}`);
       console.error((e as Error)?.message);
