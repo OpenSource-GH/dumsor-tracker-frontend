@@ -55,7 +55,6 @@ async function updateLogs(payload: any) {
   } = await supabase.auth.getSession();
 
   const url = new URL(`${BASE_URL}/logs/${payload.id}`);
-  console.log(payload);
   const response = await fetch(url, {
     method: "PATCH",
     body: JSON.stringify(payload.values),
