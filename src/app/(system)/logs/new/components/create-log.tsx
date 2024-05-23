@@ -60,8 +60,6 @@ function CreateLogForm({ ...props }: Props) {
     setCurrentTime(newUseCurrentTime);
     if (newUseCurrentTime) {
       form.setValue("timeOff", formattedTime);
-    } else {
-      form.setValue("timeOff", "");
     }
   };
 
@@ -126,7 +124,7 @@ function CreateLogForm({ ...props }: Props) {
                     {...field}
                     type="time"
                     className="placeholder:text-neutral-500"
-                    value={currentTime ? formattedTime : ""}
+                    defaultValue={currentTime ? formattedTime : ""}
                     disabled={currentTime}
                   />
                 </FormControl>

@@ -60,6 +60,14 @@ function UpdateLogForm({ id, location, timeOff, timeBackOn }: Props) {
     },
   });
 
+  const handleCheckboxChange = () => {
+    const newUseCurrentTime = !currentTime;
+    setCurrentTime(newUseCurrentTime);
+    if (newUseCurrentTime) {
+      form.setValue("timeBackOn", formattedTime);
+    }
+  };
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const payload = { values, id };
     setIsSubmitting(true);
@@ -137,7 +145,7 @@ function UpdateLogForm({ id, location, timeOff, timeBackOn }: Props) {
                     {...field}
                     type="time"
                     className="placeholder:text-neutral-500"
-                    value={currentTime ? formattedTime : ""}
+                    defaultValue={currentTime ? formattedTime : ""}
                     disabled={currentTime}
                   />
                 </FormControl>
@@ -145,7 +153,7 @@ function UpdateLogForm({ id, location, timeOff, timeBackOn }: Props) {
                 <div className="flex items-center gap-3">
                   <Checkbox
                     checked={currentTime}
-                    onCheckedChange={() => setCurrentTime(!currentTime)}
+                    onCheckedChange={handleCheckboxChange}
                   />
                   <p className="text-sm">Use current time</p>
                 </div>
