@@ -74,8 +74,6 @@ function UpdateLogForm({ id, location, timeOff, timeBackOn }: Props) {
     try {
       await updateLogs(payload);
       toast.success("Log Updated!");
-
-      // revalidatePath("/");
       router.push("/?page=1");
     } catch (e) {
       toast.error("Failed to update log");
