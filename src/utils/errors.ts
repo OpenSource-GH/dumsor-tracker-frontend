@@ -8,6 +8,8 @@ function normalizeSupabaseError(error: string): string {
     "AuthApiError: Unsupported phone provider": "Unsupported Phone Provider",
     "AuthApiError: Token has expired or is invalid":
       "Token has expired or is invalid",
+    "AuthApiError: Error sending confirmation sms":
+      "There was an error sending the OTP.",
     // Add more error mappings here as needed
   };
 
