@@ -1,10 +1,6 @@
-import { Lightbulb, LightbulbOff, Map } from "lucide-react";
+import DetailsCard from "@/app/(system)/logs/[id]/components/details-card";
 import BackButton from "@/components/ui/back-button";
 import EditButton from "@/components/ui/edit-button";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import React from "react";
-import DetailsCard from "@/app/(system)/logs/[id]/components/details-card";
 
 type Props = {
   id: string;
